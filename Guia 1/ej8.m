@@ -42,12 +42,12 @@ function ej8()
   #ahora hacemos el despeje para el db=0;
   k_0db=sqrt(ps/pr); #buscamos el valor de k, esto esta explicado en el drive
   #obtenido el k, hacemos los calculos nuevos:
-  ruido_kn=k_0db*ruido;#aca multplicamos a los valores
+  ruido_kn=k_0db*ruido;#aca multiplicamos a los valores
   #del ruido por la cte que calculamos.
   y_0db=senal+ruido_kn; #nueva senal
 
   #hago la verificacion para ver que funcione
-  pn_0db=mean(ruido_kn.^2);#elveamos al cuadrado y hacemos prom
+  pn_0db=mean(ruido_kn.^2);#eleveamos al cuadrado y hacemos prom
   #para verificar el resultado obtenido en la linea de k_0db
   SNR_final=10*log10(ps/pn_0db);
 
