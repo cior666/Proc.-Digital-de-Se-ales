@@ -7,4 +7,15 @@ function [t,y]=generasinc(fs,fm)
   x=2*pi*fs*t;
   y=sin(x)./x;
   y(x==0)=1;
+  % Gráfico
+#figure(3); clf;
+#plot(t, y, 'b', 'linewidth', 1.5);
+#hold on;
+#grid on;
+
+# Estética del gráfico
+#title('Gráfica de la Función Sinc (Seno Cardinal)');
+#xlabel('Tiempo (s)');
+#ylabel('Amplitud');
+#yline(0, 'k'); % Eje horizontal para ver los cruces por cero
 endfunction

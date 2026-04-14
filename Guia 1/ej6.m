@@ -2,15 +2,12 @@ function [t,x]=ej6()
   fm=10; #frecuencia original
   fs=0.5; #frec de senal orig
   Tm=1/fm; #periodo original
-  t_orig=-1:T:1; #paso
+  t_orig=-1:Tm:1; #paso
   #como me pide sobremuestrear a 4 veces la frec de muestreo
   #me pide hacerlo usando interpolacion, es decir,
   #llevar a fm a 40.
 
    [t_orig,x_orig]=generasinc(fs,fm);
-
-
-
    #Ahora debo crear los parametros de interpolacion
    factor=4;
    fmi=fm*factor;
@@ -19,10 +16,8 @@ function [t,x]=ej6()
 
    N=length(x_orig); #aca veo mi cantidad de muestras originales
    M=length(t_nuevo); #aca las nuevas, las que tengo que tener
-
    #creo vector para guardar el resultado de la interpolacon
    xi_sinc=zeros(1,M);
-
    #procedemos a hacer la sumatoria
    for m=1:M
      suma_sinc=0;

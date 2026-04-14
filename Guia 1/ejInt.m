@@ -1,4 +1,4 @@
-######Parte 1:
+i######Parte 1:
 A=5;
 fs=10;
 phi=pi/4;
@@ -34,13 +34,12 @@ plot(t, x_orig, 'g--', 'linewidth', 1); hold on;
 stairs(t, y_cuant, 'b', 'linewidth', 2);           #cuantizada
 # Para que se noten los 16 niveles, podemos dibujar líneas horizontales tenues
 niveles_y = linspace(min(y_cuant), max(y_cuant), 16);
-hline = arrayfun(@(y) yline(y, 'color', [0.8 0.8 0.8], 'linestyle', ':'), niveles_y);
+
 title('Señal Original vs. Rectificada y Cuantizada (16 niveles)');
 xlabel('Tiempo (s)');
 ylabel('Amplitud (V)');
 legend('Original (Continua en amplitud)', 'Procesada (Discreta en amplitud)');
 grid on;
-
 
 
 #####Parte 2
