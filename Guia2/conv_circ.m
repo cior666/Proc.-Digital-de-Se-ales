@@ -5,7 +5,7 @@ function y=conv_circ(x,h)
 N=length(x);
 M=length(h);
 #hacemos la verificacion como buena practica
-if N!=M
+if N~=M
     error('las senales tienen que tener el mismo tamanio');
 end
 
