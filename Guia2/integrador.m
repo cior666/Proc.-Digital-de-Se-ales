@@ -3,80 +3,75 @@
 #####################################
 #parte 2
 N=20;
-x=zeros(1,N);
-x(1)=1; #seria el delta[0]
-h=zeros(1,N);
-for n=1:N
-    if n==1
-        h(1)=x(1); #seria el caso de n=1 que hice en hoja
-    else
-        h(n)=x(n)+0.2*x(n-1)+0.6*h(n-1);
-    end
-end 
+n = 0:N-1;
+#Generamos el impulso unitario (1 seguido de 19 ceros)
+delta = [1, zeros(1, N-1)];
+# Definimos los coeficientes del sistema a partir de la ecuación
+B = [1, 0.2];   # Coeficientes de la entrada x
+A = [1, -0.6];  # Coeficientes de la salida y
+#calculo con filter porque al necesitar entradas pasadas no me sirve mi func armada porq esta armada para FIR
+h = filter(B, A, delta);
 
-#figure;
-#subplot(2,1,1);
-#stem(h, 'filled', 'MarkerFaceColor', 'm');
-#title('rta a los impulsos h[n]');
-#subplot(2,1,2);
-#stem(x, 'filled', 'MarkerFaceColor', 'c');
-#title('entrada x[n]');
-#pause(100);
+% Graficamos
+figure;
+stem(n, h, 'filled', 'b', 'LineWidth', 1.5);
+title('Respuesta al Impulso h[n] del Sistema IIR');
+xlabel('n (muestras)');
+ylabel('Amplitud');
+grid on;
+
 
 ###################################################################################
 #parte 3
-L=10;
-x_nueva=zeros(1,L); #pulso de 10 muestras
-M=length(h); #long de la rta anterior
+L = 10;
+x = ones(1, L);
+M = length(h); % h (de 20 muestras) sigue en memoria
 
-#convolucion lineal 
-y_lineal=conv(x_nueva,h);
+% a) Sumatoria de convolución
+y_a = conv_lineal(x, h);
 
-#conv matricial
-col_1=[h,zeros(1,L-1)]; #primera columna de la matriz de convolucion, rellena de 0 
-fil_1=[h(1),zeros(1,L-1)]; #primera fila de la matriz de convolucion, rellena de 0
+% b) Representación matricial
+N_total = L + M - 1; % Longitud teórica: 10 + 20 - 1 = 29
+H_matriz = zeros(N_total, L); % Matriz de 29 filas x 10 columnas
 
-h_matriz=toeplitz(col_1,fil_1); #creo la matriz de convolucion usando la funcion de octave
-y_matricial=h_matriz*x_nueva'; #multiplico la matriz por el vector de entrada
-#ahora la transpongo
-y_b=y_matricial';
-
-#por ultimo me pide la circular pero que salga como lineal 
-Ntot=L+M-1; #este seria el tamano necesario para q
-#la circular q planteo tenga el mismo tamanio
-
-x_relllena=[x_nueva,zeros(1,Ntot-L)]; #relleno la entrada con ceros
-h_rellena=[h,zeros(1,Ntot-M)]; #relleno la rta con ceros.
-
-#ahora procedo a hallar la circular usando la funcion que hice antes
-y_circular=conv_circ(x_relllena,h_rellena);
-
-
-
-# calculo el error entre la lineal y las otras dos
-error_matricial = max(abs(y_lineal - y_b));
-error_circular  = max(abs(y_lineal - y_circular));
-
-disp(['Error máximo (Lineal vs Matricial): ', num2str(error_matricial)]);
-disp(['Error máximo (Lineal vs Circular):  ', num2str(error_circular)]);
-
-if error_matricial < 1e-10 && error_circular < 1e-10
-    disp('los tres metodos dan el mismo resultado :D');
-else
-    disp('hay diferencias entre los metodos :c');
+% Llenamos la matriz columna por columna desplazando 'h' hacia abajo
+for col = 1:L
+#arranca en col y va hasta col+m-1           columna
+    H_matriz(col : col + M - 1, col) = h'; #relleno con h transpuesto
 end
 
-figure;
-hold on;
-# hago las 3 superpuestas a ver si coinciden o no
-stem(y_lineal, 'b', 'LineWidth', 2, 'MarkerSize', 8);     # Lineal en azul (tallo)
-stem(y_b, 'rx', 'LineWidth', 2, 'MarkerSize', 10);        # Matricial en cruces rojas
-stem(y_circular, 'g.', 'LineWidth', 2, 'MarkerSize', 15); # Circular en puntos verdes
+% Multiplicación matricial clásica y transposición para graficar
+y_b = (H_matriz * x')';
+#matriz por vector columna y la vuelvo columna
 
-title('Comparación de Salidas y[n] (Parte 3)');
-xlabel('Muestras (n)');
-ylabel('Amplitud');
-legend('Lineal (conv)', 'Matricial', 'Circular (conv\_circ)');
+% c) Convolución circular (con zero-padding)
+N_total = L + M - 1; % 10 + 20 - 1 = 29
+x_pad = [x, zeros(1, N_total - L)];
+h_pad = [h, zeros(1, N_total - M)];
+y_c = conv_circ(x_pad, h_pad);
+
+% d) Verificación (Comparamos que los resultados coincidan)
+error_ab = max(abs(y_a - y_b));
+error_ac = max(abs(y_a - y_c));
+
+disp('--- Resultados de la Verificación ---');
+disp(['Error máximo entre Método A y B: ', num2str(error_ab)]);
+disp(['Error máximo entre Método A y C: ', num2str(error_ac)]);
+
+% VISUALIZACIÓN
+figure;
+subplot(3,1,1);
+stem(y_a, 'filled', 'b');
+title('a) Convolución Lineal (Sumatoria)');
 grid on;
-hold off;
-pause(100);
+
+subplot(3,1,2);
+stem(y_b, 'filled', 'r');
+title('b) Representación Matricial');
+grid on;
+
+subplot(3,1,3);
+stem(y_c, 'filled', 'g');
+title('c) Convolución Circular (con Zero-Padding)');
+pause(50);
+grid on;

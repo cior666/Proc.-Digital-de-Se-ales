@@ -24,7 +24,8 @@ for n=1:longitud_salida #este for itera sobre la salida es decir sobre y[n]
     k_min=max(1,n-M+1); #minimo
     k_max=min(n,L); #maximo
     for k=k_min:k_max #este for itera sobre k es decir la entrada.
-        #como vimos en las otras guias octave arranca en 1 entonces tengo que sumar +1
+        #como vimos en las otras guias 
+        #octave arranca en 1 entonces tengo que sumar +1
         y(n)=y(n)+x(k)*h(n-k+1); #definicion de convolucion lineal 
     end
 end

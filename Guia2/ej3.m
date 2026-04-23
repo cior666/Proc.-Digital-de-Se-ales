@@ -16,11 +16,11 @@ x(2)=-a; #seria -a*delta[1] que esta en indice 2
 #ahora que tengo la senal y las salidas puedo hacer el camino original
 #de la misma es decir que pase por el primer sistema y esa rta pase x el sdo
 
-#PRIMERA FORMA
+#PRIMERA FORMA (x -> hA -> hB)
 v2=conv(x,hA); #salida luego del primer filtro
 y=conv(v2,hB); #salida luego del sdo filtro
 
-#SDA FORMA
+#SDA FORMA (x -> hB -> hA)
 v1=conv(x,hB); #salida usando a hB como primer filtro
 y_inv=conv(v1,hA); #salida usando a hA como sdo filtro
 
