@@ -92,7 +92,7 @@ printf("\n--- SEÑAL SENOIDAL ---\n");
 printf("Valor medio:   %.4f\n", medio_sen);
 printf("Max: %.4f | Min: %.4f | Amplitud: %.4f\n", max_sen, min_sen, amplitud_sen);
 printf("Potencia media: %.4f | RMS: %.4f\n", pot_sen, rms_sen);
-printf("Acción: %.4f | Energía: %.4f\n", accion_sen, energia_sen);
+printf("Acción: %.4f | Energía: %.4f\n", accion_sen, energy_sen);
 
 # Resultados para la señal rampa
 printf("\n--- SEÑAL RAMPA ---\n");
