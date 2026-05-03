@@ -51,7 +51,6 @@ end
 #vuelva a medir el grado de parecido pero con una combinacion lineal en
 #la que se varia la fase de las senoidales y
 
-printf('\n--- EVALUANDO GRADO DE PARECIDO CON DESFASE ---\n');
 y_fase = zeros(1, N);
 fases_modificadas = zeros(1, 10);
 
@@ -60,7 +59,7 @@ for f = 1:10
     fase_aleatoria = rand() * 2 * pi;
     fases_modificadas(f) = fase_aleatoria;
     
-    % Armamos la nueva señal sumando la senoidal con su alfa original, pero DESFASADA
+    #armo la senal con el mismo alfa de antes pero desfazad
     y_fase = y_fase + alfa(f) * A * sin(2 * pi * f * t + fase_aleatoria);
 end
 
@@ -88,11 +87,7 @@ ylabel('Valor extraído por el Producto Interno');
 xticks(1:10);
 grid on;
 
-
-
-
-
-figure; % Abre ventana
+figure;
 
 % --- GRÁFICO SUPERIOR: LA RECETA (Dominio de la frecuencia) ---
 subplot(2, 1, 1); 
